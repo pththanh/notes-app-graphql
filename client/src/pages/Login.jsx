@@ -2,12 +2,12 @@ import React, { useContext } from "react";
 import { Typography, Button } from "@mui/material";
 import { GoogleAuthProvider, signInWithPopup, getAuth } from "firebase/auth";
 import { AuthContext } from "../context/AuthProvider";
-import { useNavigation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const auth = getAuth();
   const { user } = useContext(AuthContext);
-  const navigate = useNavigation();
+  const navigate = useNavigate();
 
   const handleLoginWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
