@@ -2,12 +2,11 @@ import React, { useContext } from "react";
 import { Typography, Button } from "@mui/material";
 import { GoogleAuthProvider, signInWithPopup, getAuth } from "firebase/auth";
 import { AuthContext } from "../context/AuthProvider";
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 function Login() {
   const auth = getAuth();
   const { user } = useContext(AuthContext);
-  const navigate = useNavigate();
 
   const handleLoginWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
@@ -17,8 +16,7 @@ function Login() {
   };
 
   if (user?.uid) {
-    navigate("/");
-    return;
+    return <Navigate to="/" />;
   }
 
   return (

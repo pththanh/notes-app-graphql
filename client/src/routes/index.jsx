@@ -5,6 +5,7 @@ import AuthProvider from "../context/AuthProvider";
 import ProtectedRouter from "./ProtectedRouter";
 import ErrorPage from "../pages/ErrorPage";
 import NoteList from "../components/NoteList";
+import Note from "../components/Note";
 
 const AuthLayout = () => {
   return (
@@ -26,10 +27,38 @@ export default createBrowserRouter([
           {
             element: <Home />,
             path: "/",
+            loader: async () => {
+              const query = `query Folders {
+                folders {
+                  id,
+                  name, 
+                  createdAt
+                }
+              }`;
+
+              const res = await fetch("http://localhost:4000/graphql", {
+                method: "POST",
+                headers: {
+                  "Content-type": "application/json",
+                },
+                body: JSON.stringify({
+                  query,
+                }),
+              });
+
+              const { data } = await res.json();
+              return data;
+            },
             children: [
               {
                 element: <NoteList />,
                 path: "folders/:folderId",
+                children: [
+                  {
+                    element: <Note />,
+                    path: "note/:noteId",
+                  },
+                ],
               },
             ],
           },

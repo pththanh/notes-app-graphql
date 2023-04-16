@@ -1,10 +1,9 @@
 import React from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, Navigate } from "react-router-dom";
 
 function ProtectedRouter({ children }) {
-  const navigate = useNavigate();
   if (!localStorage.getItem("access-token")) {
-    navigate("/login");
+    <Navigate to="/login" />;
   }
 
   return <Outlet />;

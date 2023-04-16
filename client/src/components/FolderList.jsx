@@ -1,8 +1,10 @@
-import { List, Card, CardContent, Typography } from "@mui/material";
-import React from "react";
-import { Link } from "react-router-dom";
+import { List, Card, CardContent, Typography, Box } from "@mui/material";
+import React, { useState } from "react";
+import { Link, useParams } from "react-router-dom";
 
 function FolderList({ folders }) {
+  const { folderId } = useParams();
+  const [activeFolderId, setActiveFolderId] = useState(folderId);
   return (
     <List
       sx={{
@@ -13,19 +15,37 @@ function FolderList({ folders }) {
         textAlign: "left",
         overflow: "auto",
       }}
+      subheader={
+        <Box>
+          <Typography sx={{ fontWeight: "bold", mb: "5px" }}>
+            Folders
+          </Typography>
+        </Box>
+      }
     >
       {folders?.map((item, index) => {
         return (
           <Link
             key={`${item?.id}_${index}`}
             to={`folders/${item.id}`}
-            style={{ textDecoration: "none" }}
+            style={{
+              textDecoration: "none",
+            }}
+            onClick={() => setActiveFolderId(item.id)}
           >
-            <Card sx={{ mb: "5px" }}>
+            <Card
+              sx={{
+                mb: "5px",
+                backgroundColor:
+                  item.id === activeFolderId ? "rgb(255 211 140)" : null,
+              }}
+            >
               <CardContent
                 sx={{ "&:last-child": { pb: "10px" }, padding: "10px" }}
               >
-                <Typography>{item.name}</Typography>
+                <Typography sx={{ fontSize: 16, fontWeight: "bold" }}>
+                  {item.name}
+                </Typography>
               </CardContent>
             </Card>
           </Link>
