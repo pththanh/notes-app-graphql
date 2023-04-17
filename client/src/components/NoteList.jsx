@@ -1,13 +1,13 @@
 import { Card, CardContent, Grid, List, Box, Typography } from "@mui/material";
 import React, { useState } from "react";
-import { Link, Outlet, useParams } from "react-router-dom";
+import { Link, Outlet, useParams, useLoaderData } from "react-router-dom";
 
 function NoteList() {
   const { noteId } = useParams();
+  const { folder } = useLoaderData();
 
   const [activeNoteId, setActiveNoteId] = useState(noteId);
 
-  const folders = { notes: [{ id: "1", name: "<p>Note List</p>" }] };
   return (
     <Grid container height="100%">
       <Grid
@@ -32,7 +32,7 @@ function NoteList() {
             </Box>
           }
         >
-          {folders?.notes?.map(({ id, name }, key) => {
+          {folder?.notes?.map(({ id, content }, key) => {
             return (
               <Link
                 key={`${id}_${key}`}
@@ -53,7 +53,7 @@ function NoteList() {
                     <div
                       style={{ fontSize: 14, fontWeight: "bold" }}
                       dangerouslySetInnerHTML={{
-                        __html: `${name.substring(0, 30) || "Empty"} `,
+                        __html: `${content.substring(0, 30) || "Empty"} `,
                       }}
                     ></div>
                   </CardContent>
