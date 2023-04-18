@@ -60,6 +60,10 @@ const resolvers = {
   },
 };
 
+const URI = `mongodb+srv://${process.env.DB_USER_NAME}:${process.env.DB_PASSWORD}@cluster0.p1unytq.mongodb.net/?retryWrites=true&w=majority`;
+
+const PORT = process.env.port || 4000;
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,
@@ -70,5 +74,5 @@ await server.start();
 
 app.use(cors(), bodyParser.json(), expressMiddleware(server));
 
-await new Promise((resolve) => httpServer.listen({ port: 4000 }, resolve));
+await new Promise((resolve) => httpServer.listen({ PORT: 4000 }, resolve));
 console.log("Server is running at port 4000");
