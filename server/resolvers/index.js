@@ -3,13 +3,20 @@ import { FolderModel } from "../models/index.js";
 
 export const resolvers = {
   Query: {
-    folders: async () => {
-      const folders = await FolderModel.find();
+    folders: async (parent, args, context) => {
+      const folders = await FolderModel.find({
+        _id: context.uid,
+      });
       return folders;
     },
-    folder: (parent, args) => {
+    folder: async (parent, args) => {
       const folderId = args.folderId;
-      return fakeData.folders.find((folder) => folder.id === +folderId);
+
+      const foundFother = await FolderModel.findOne({
+        _id: folderId,
+      });
+
+      return foundFother;
     },
     note: (parent, args) => {
       const noteId = args.noteId;
@@ -23,6 +30,14 @@ export const resolvers = {
     },
     notes: (parent, args) => {
       return fakeData.notes.filter((note) => note.folderId === parent.id);
+    },
+  },
+  Mutation: {
+    addFolder: async (parent, args) => {
+      const newFolder = new FolderModel({ ...args, authorID: "123" });
+      await newFolder.save();
+
+      return newFolder;
     },
   },
 };
