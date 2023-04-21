@@ -3,7 +3,7 @@ import { Outlet, Navigate } from "react-router-dom";
 
 function ProtectedRouter({ children }) {
   if (!localStorage.getItem("access-token")) {
-    <Navigate to="/login" />;
+    return <Navigate to="/login" />;
   }
 
   return <Outlet />;
