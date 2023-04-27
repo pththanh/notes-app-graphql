@@ -7,14 +7,14 @@ export const AuthContext = createContext();
 
 function AuthProvider({ children }) {
   const [user, setUser] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   const auth = getAuth();
 
   useEffect(() => {
     const unsubcribed = auth.onIdTokenChanged((user) => {
-      if (!!user?.uid) {
+      if (user?.uid) {
         setUser(user);
         if (user.accessToken !== localStorage.getItem("accessToken")) {
           localStorage.setItem("accessToken", user.accessToken);
@@ -33,7 +33,7 @@ function AuthProvider({ children }) {
     return () => {
       unsubcribed();
     };
-  }, [auth, navigate]);
+  }, [auth]);
 
   return (
     <AuthContext.Provider value={{ user, setUser }}>
